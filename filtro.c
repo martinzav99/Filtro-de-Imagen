@@ -25,7 +25,6 @@ int main(int argc, char *argv[])
 int enmascarar_c(unsigned char *a ,unsigned char *b ,unsigned char *mask,int cant)
 {
     unsigned char *buffer1,*buffer2,*buffermask;
-
     buffer1 = (unsigned char *)malloc(cant);
     if (buffer1 ==NULL)
     {
@@ -48,7 +47,21 @@ int enmascarar_c(unsigned char *a ,unsigned char *b ,unsigned char *mask,int can
     cargarBuffer(a,buffer1,cant);
     cargarBuffer(b,buffer2,cant);
     cargarBuffer(mask,buffermask,cant);
-    
+    int i=0;
+    while(i<cant/3)
+    {
+        if (buffermask[i]<=0 && buffermask[i+1]<=0 && buffermask[i+2]<=0 )
+        {
+            buffer1[i] = buffer2[i];
+            buffer1[i+1] = buffer2[i+1];
+            buffer1[i+2] = buffer2[i+2];           
+        }
+        i=i+3;
+    }
+
+    FILE *archivo_nuevo = fopen("salida.rgb","wb");
+    fwrite(buffer1,cant,1,archivo_nuevo);
+
     free(buffer1);
     free(buffer2);
     free(buffermask); 
