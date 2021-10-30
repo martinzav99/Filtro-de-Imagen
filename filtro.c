@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 extern void enmascarar_asm(unsigned char *a ,unsigned char *b ,unsigned char *mask,int cant);
+void enmascararAssembler(unsigned char *a ,unsigned char *b ,unsigned char *mask,int cant);
 int enmascarar_c(unsigned char *a ,unsigned char *b ,unsigned char *mask,int cant);
 int cargarBuffer(unsigned char *imagen, unsigned char *buffer,int cant);
 void procesarImagen(unsigned char *buff1,unsigned char *buff2,unsigned char *buffMask,int cant);
@@ -9,6 +10,7 @@ void procesarImagen(unsigned char *buff1,unsigned char *buff2,unsigned char *buf
 int main(int argc, char *argv[])  
 {
     unsigned char *img,*img2,*mask;
+    unsigned char *buffer1,*buffer2,*buffermask;
     int alto,ancho,imagenSize;
     int RGB_size = 3; //en bytes
     
@@ -18,32 +20,23 @@ int main(int argc, char *argv[])
     sscanf(argv[4],"%d",&alto);
     sscanf(argv[5],"%d",&ancho);
     imagenSize = alto * ancho * RGB_size;
-    enmascarar_c(img,img2,mask,imagenSize);
-
-    return 0;
-}
-
-int enmascarar_c(unsigned char *a ,unsigned char *b ,unsigned char *mask,int cant)
-{
-    unsigned char *buffer1,*buffer2,*buffermask;
-
-    buffer1 = (unsigned char *)malloc(cant);
-    buffer2 = (unsigned char *)malloc(cant);
-    buffermask = (unsigned char *)malloc(cant); 
     
-    cargarBuffer(a,buffer1,cant);
-    cargarBuffer(b,buffer2,cant);
-    cargarBuffer(mask,buffermask,cant);
 
-    procesarImagen(buffer1,buffer2,buffermask,cant);
-
-    FILE *archivo_C = fopen("salida.rgb","wb");
-    fwrite(buffer1,cant,1,archivo_C);
-    fclose(archivo_C);
+    buffer1 = (unsigned char *)malloc(imagenSize);
+    buffer2 = (unsigned char *)malloc(imagenSize);
+    buffermask = (unsigned char *)malloc(imagenSize); 
     
+    cargarBuffer(img,buffer1,imagenSize);
+    cargarBuffer(img2,buffer2,imagenSize);
+    cargarBuffer(mask,buffermask,imagenSize);
+
+    enmascarar_c(buffer1,buffer2,buffermask,imagenSize);
+    //enmascararAssembler(buffer1,buffer2,buffermask,imagenSize);
     free(buffer1);
     free(buffer2);
-    free(buffermask);     
+    free(buffermask); 
+
+    return 0;
 }
 
 int cargarBuffer(unsigned char *imagen, unsigned char * buffer,int cant_bytes)
@@ -60,11 +53,10 @@ int cargarBuffer(unsigned char *imagen, unsigned char * buffer,int cant_bytes)
     fclose(archivo);
 }
 
-void procesarImagen(unsigned char *buff1,unsigned char *buff2,unsigned char *buffMask,int cant)
+int enmascarar_c(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buffMask,int cant)
 {
     int i=0;
-    int cant_RGBs = cant/3;
-    while(i<cant_RGBs)
+    while(i<cant)
     {
         if (buffMask[i]==0 && buffMask[i+1]==0 && buffMask[i+2]==0)
         {
@@ -74,4 +66,18 @@ void procesarImagen(unsigned char *buff1,unsigned char *buff2,unsigned char *buf
         }
         i+=3;
     }
+    printf("valor de i: %d",i);
+
+    FILE *archivo_C = fopen("salida.rgb","wb");
+    fwrite(buff1,cant,1,archivo_C);
+    fclose(archivo_C);    
+}
+
+void enmascararAssembler(unsigned char *a ,unsigned char *b ,unsigned char *mask,int cant)
+{
+    enmascarar_asm(a,b,mask,cant);
+
+    FILE *archivo_Asm = fopen("salida2.rgb","wb");
+    fwrite(a,cant,1,archivo_Asm);
+    fclose(archivo_Asm);
 }
