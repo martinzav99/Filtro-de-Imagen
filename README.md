@@ -154,7 +154,7 @@ Para mas informacion:[Link](http://puntoflotante.org/errors/rounding/)
 * **r positivo**<p>
 ![Screenshot](tiemposEnmascarar.jpg)
 * **r negativo** <p>
-![Screenshot](escalar1.png)
+![Screenshot](salida.jpg)
 
 ## Ejecucion 📦
 Se puede notar en los ejemplos que para ejecutar los programas se hace uso de un archivo .sh , estos son ejecutables que contienen el codigo de compilacion de cada programa junto con su ejecuccion.
