@@ -42,7 +42,7 @@ _Nota: No es necesario hacer el update en cada paso, con hacerlo una vez al prin
 
 ### Resolución 🔧
 
-Para obtener los atributos pasados por linea de comado (imagen1  iamgen2  mascara alto ancho) se utiliza argc y *argv[].Este ultimo es un vector de punteros *char , que en cierta forma podemos decir que es un vector de strings.<p>
+**Para obtener los atributos** pasados por linea de comado (imagen1  iamgen2  mascara alto ancho) **se utiliza argc y *argv[]**.Este ultimo es un vector de punteros *char , que en cierta forma podemos decir que es un vector de strings.<p>
 Se empieza el codigo declarando todas las variables a usar y a continuacion se las instancia. Primero se guarda los nombres de los archivo donde estan las imagenes/mascara y despues usando la funcion atoi , que permite pasar de "String" a entero, guardamos los valores del alto y ancho.<p>
 Tambien se define el tamaño de un RGB, este nos servira para mas adelante reservar la memoria necesaria.   
 ```
@@ -62,10 +62,10 @@ int main(int argc, char *argv[])
     ancho = atoi(argv[5]);
     ...
 ```
-_Nota: En argv[0] se encuentra el nombre del archivo.C por eso no es usado._
+_Nota: En argv[0] se encuentra el nombre del archivo.C por eso no es usado._<p>
 _Nota2: RGB = [255,255,255] = [8bits,8bits,8bits] = [1byte,1byte,1byte] = 3bytes._
 
-A continuacion, reservamos memoria para cada buffer , para esto usamos la funcion malloc que no pide el tamaño de los datos a reservar y la cantidad en bytes. Luego, se usa la funcion cargarBuffer,para meter la informacion de las fotos en el buffer correspondiente y free para liberar la memoria de los buffer para cuando no se usen mas.
+A continuacion, **reservamos memoria para cada buffer** , para esto usamos la **funcion malloc** que no pide el tamaño de los datos a reservar y la cantidad en bytes. Luego, se usa la funcion cargarBuffer,para meter la informacion de las fotos en el buffer correspondiente **y free para liberar la memoria** de los buffer para cuando no se usen mas.
 ```
     ...
     imagenSize = alto * ancho * RGB_size;
@@ -85,7 +85,7 @@ A continuacion, reservamos memoria para cada buffer , para esto usamos la funcio
 ```
 _Nota: La funcion malloc pertence a la libreria stdlib.h._
 
-Lo mas importante a destacar de cargarBuffer es el uso del tipo FILE y su funcion fopen que solicita un nombre y el modo en que se usara, en nuestro caso "rb" hace referencia que el archivo designado se leera byte por byte. Despues, se usa fread para guardar la informacion del archivo (imagen) en un buffer.
+Lo mas importante a destacar de cargarBuffer es el uso del **tipo FILE y su funcion fopen** que solicita un nombre y el modo en que se usara, en nuestro caso "rb" hace referencia que el archivo designado se leera byte por byte. Despues, se usa **fread para guardar la informacion del archivo** (imagen) en un buffer.
 ```
 int cargarBuffer(char *imagen, unsigned char * buffer,int cant_bytes)
 {
@@ -95,7 +95,7 @@ int cargarBuffer(char *imagen, unsigned char * buffer,int cant_bytes)
     fclose(archivo);
 }
 ```
-Tanto para enmascar_Asm y enmascar_C, se medira el tiempo de procesamiento de imagen, para esto se usa la funcion clock() que maracara un inicio y fin para luego, en base a estos, calcular el tiempo transcurrido.
+Tanto para enmascar_Asm y enmascar_C, **se medira el tiempo de procesamiento de imagen**, para esto **se usa la funcion clock()** que maracara un inicio y fin para luego, en base a estos, calcular el tiempo transcurrido.
 ```
     ...
     inicio=clock();
@@ -115,8 +115,8 @@ Tanto para enmascar_Asm y enmascar_C, se medira el tiempo de procesamiento de im
 ```
 _Nota: La funcion clock pertence a la libreria time.h_
 
-La logica dentro de la funcion enmascar_C es recorrer el buffer de la mascara y consultar por cada conjunto de 3 bytes si forman un RGB blanco ,es decir,[255,255,255]. En caso afirmativo , ese conjunto de 3 bytes del buffer correspondiente a la imagen1 seran remplazados por los de la imagen 2.
-Al terminar de recorrer todo el buffer, se procedera a crear una archivo de salida nuevo y se escribira con la informacion del buffer de la imagen 1 recientemente modificada.
+La logica dentro de la funcion enmascar_C es recorrer el buffer de la mascara y consultar por cada conjunto de 3 bytes si forman un RGB blanco ,es decir,[255,255,255]. En caso afirmativo , ese conjunto de 3 bytes del buffer correspondiente a **la imagen1 seran remplazados por los de la imagen 2.**
+Al terminar de recorrer todo el buffer, **se procedera a crear una archivo** de salida nuevo y se escribira con la informacion del buffer de la imagen 1 recientemente modificada.
 ```
 int enmascarar_c(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buffMask,int cant)
 {
@@ -136,7 +136,7 @@ int enmascarar_c(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buff
     fclose(archivo_C);    
 }
 ```
-En enmascararAssembler esta contenida enmascarar_asm (llamada a funcion externa de assembler)y la escritura ya que al calcular el tiempo de procesamiento se tiene en cuenta la escritura del archivo de salida. 
+En enmascararAssembler esta contenida enmascarar_asm (llamada a funcion externa de assembler)y la escritura ya que **al calcular el tiempo de procesamiento se tiene en cuenta la escritura del archivo de salida.** 
 ```
 void enmascararAssembler(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buffMask,int cant)
 {
