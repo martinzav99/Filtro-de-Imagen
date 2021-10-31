@@ -3,23 +3,22 @@
 #include<time.h>
 
 extern void enmascarar_asm(unsigned char *a ,unsigned char *b ,unsigned char *mask,int cant);
-void enmascararAssembler(unsigned char *a ,unsigned char *b ,unsigned char *mask,int cant);
-int enmascarar_c(unsigned char *a ,unsigned char *b ,unsigned char *mask,int cant);
-int cargarBuffer(unsigned char *imagen, unsigned char *buffer,int cant);
-void procesarImagen(unsigned char *buff1,unsigned char *buff2,unsigned char *buffMask,int cant);
+void enmascararAssembler(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buffMask,int cant);
+int enmascarar_c(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buffMask,int cant);
+int cargarBuffer(char *imagen, unsigned char *buffer,int cant);
 
 int main(int argc, char *argv[])  
 {
-    unsigned char *img,*img2,*mask,*alt;
     unsigned char *buffer1,*buffer2,*buffermask;
+    char *img,*img2,*mask,*alt;
     int alto,ancho,imagenSize;
-    clock_t inicio,fin;
     double tiempoC,tiempoAsm;
+    clock_t inicio,fin;
 
     int RGB_size = 3; //en bytes
-    img = (unsigned char *)argv[1];
-    img2 = (unsigned char *)argv[2];
-    mask = (unsigned char *)argv[3];
+    img = argv[1];
+    img2 = argv[2];
+    mask = argv[3];
     alto = atoi(argv[4]);
     ancho = atoi(argv[5]);  
      
@@ -38,6 +37,7 @@ int main(int argc, char *argv[])
     tiempoAsm = (double)(fin-inicio)/CLOCKS_PER_SEC;
     printf("Imagen tamano: %d x %d\n",alto,ancho);
     printf("Tiempo en C : %.6f\n",tiempoAsm);
+    printf("\n");
 
     inicio=clock();
     enmascararAssembler(buffer1,buffer2,buffermask,imagenSize);
@@ -45,7 +45,8 @@ int main(int argc, char *argv[])
     tiempoC = (double)(fin-inicio)/CLOCKS_PER_SEC;
     printf("Imagen tamano: %d x %d\n",alto,ancho);
     printf("Tiempo en ASM : %.6f\n",tiempoC);
-    
+    printf("-----------\n");
+
     free(buffer1);
     free(buffer2);
     free(buffermask);
@@ -53,7 +54,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int cargarBuffer(unsigned char *imagen, unsigned char * buffer,int cant_bytes)
+int cargarBuffer(char *imagen, unsigned char * buffer,int cant_bytes)
 {
     FILE *archivo = fopen(imagen,"rb");
 
@@ -86,11 +87,11 @@ int enmascarar_c(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buff
     fclose(archivo_C);    
 }
 
-void enmascararAssembler(unsigned char *a ,unsigned char *b ,unsigned char *mask,int cant)
+void enmascararAssembler(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buffMask,int cant)
 {
-    enmascarar_asm(a,b,mask,cant);
+    enmascarar_asm(buff1,buff2,buffMask,cant);
 
     FILE *archivo_Asm = fopen("salida2.rgb","wb");
-    fwrite(a,cant,1,archivo_Asm);
+    fwrite(buff1,cant,1,archivo_Asm);
     fclose(archivo_Asm);
 }

@@ -13,7 +13,7 @@ gm convert -size 3888x2592 -depth 8  salida2.rgb  salida2.jpg
 
 rm paisaje.rgb lobo.rgb boceto.rgb salida.rgb salida2.rgb 
 
-<< 'comentario'
+
 #---------------------------------------------------
 gm convert -resize 1098x732 paisaje.jpg imagen1.jpg
 gm convert -resize 1098x732 lobo.jpg imagen2.jpg
@@ -31,17 +31,20 @@ rm imagen1.rgb imagen2.rgb mask.rgb salida.rgb salida2.rgb
 
 #---------------------------------------------------
 
-gm convert -resize 500x300 paisaje.jpg imagen1.jpg
-gm convert -resize 500x300 lobo.jpg imagen2.jpg
-gm convert -resize 500x300 boceto.jpg mask.jpg
+<< 'comentario'
+
+gm convert -resize 486x324 paisaje.jpg imagen1.jpg
+gm convert -resize 486x324 lobo.jpg imagen2.jpg
+gm convert -resize 486x324 boceto.jpg mask.jpg
 
 gm convert imagen1.jpg imagen1.rgb
 gm convert imagen2.jpg imagen2.rgb
 gm convert mask.jpg mask.rgb
 
-./filtro "imagen1.rgb" "imagen2.rgb" "mask.rgb" 500 300
-gm convert -size 500x300 -depth 8  salida.rgb  salida.jpg
-gm convert -size 500x300 -depth 8  salida2.rgb  salida2.jpg
+./filtro "imagen1.rgb" "imagen2.rgb" "mask.rgb" 486 324
+gm convert -size 486x324 -depth 8  salida.rgb  salida.jpg
+gm convert -size 486x324 -depth 8  salida2.rgb  salida2.jpg
 
 rm imagen1.rgb imagen2.rgb mask.rgb salida.rgb salida2.rgb
+
 comentario
