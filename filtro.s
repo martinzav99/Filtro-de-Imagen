@@ -1,5 +1,5 @@
 section .data
-pixelNegro db 0
+pixelBlanco db 255
 
 section .text
     global enmascarar_asm
@@ -13,17 +13,17 @@ mov ebx , [ebp+12] ;img2
 mov ecx , [ebp+16] ; mask
 mov edx , [ebp +20] ; imgSize
 mov esi , 0
-mov edi , [pixelNegro]
+mov edi , [pixelBlanco]
 
 ciclo:
 movd xmm0,[eax+esi]
 movd xmm1,[ebx+esi]
 cmp [ecx+esi] , edi
-jne esPixelBlanco 
+jne esPixelNegro 
 movaps xmm2,xmm1
 jmp continuar
 
-esPixelBlanco:
+esPixelNegro:
 movaps xmm2,xmm0
 
 continuar:

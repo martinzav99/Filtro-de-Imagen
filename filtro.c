@@ -72,7 +72,7 @@ int enmascarar_c(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buff
     int i=0;
     while(i<cant)
     {
-        if (buffMask[i]==0 && buffMask[i+1]==0 && buffMask[i+2]==0)
+        if (buffMask[i]==255 && buffMask[i+1]==255 && buffMask[i+2]==255)
         {
             buff1[i] = buff2[i];
             buff1[i+1] = buff2[i+1];
