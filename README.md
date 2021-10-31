@@ -149,16 +149,17 @@ void enmascararAssembler(unsigned char *buff1 ,unsigned char *buff2 ,unsigned ch
 ```
 
 ### Ejemplos 🚀
-_Nota: En algunos resultados puede no ser exactamente precisos y presentar errores de redondeo_ 
-Para mas informacion:[Link](http://puntoflotante.org/errors/rounding/)
-* **r positivo**<p>
+_Nota: Los tiempos dependen del tamaño de la imagen/mascara_ 
+* **Tiempos de procesamiento por tamaños**<p>
 ![Screenshot](tiemposEnmascarar.jpg)
-* **r negativo** <p>
+* **Resultado del enmascaramiento** <p>
 ![Screenshot](salida.jpg)
 
 ## Ejecucion 📦
-Se puede notar en los ejemplos que para ejecutar los programas se hace uso de un archivo .sh , estos son ejecutables que contienen el codigo de compilacion de cada programa junto con su ejecuccion.
+Se puede notar en los ejemplos que para ejecutar el programa se hace uso de un archivo .sh , estos ejecutable contienen el codigo de compilacion.
+```
 
+```
 ## Autor ✒️
 - Martin Zavalla Gamarra.
 
