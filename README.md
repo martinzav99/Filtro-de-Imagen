@@ -115,7 +115,8 @@ Tanto para enmascar_Asm y enmascar_C, se medira el tiempo de procesamiento de im
 ```
 _Nota: La funcion clock pertence a la libreria time.h_
 
-
+La logica dentro de la funcion enmascar_C es recorrer el buffer de la mascara y consultar por cada conjunto de 3 bytes si forman un RGB blanco ,es decir,[255,255,255]. En caso afirmativo , ese conjunto de 3 bytes del buffer correspondiente a la imagen1 seran remplazados por los de la imagen 2.
+Al terminar de recorrer todo el buffer, se procedera a crear una archivo de salida nuevo y se escribira con la informacion del buffer de la imagen 1 recientemente modificada.
 ```
 int enmascarar_c(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buffMask,int cant)
 {
@@ -135,7 +136,7 @@ int enmascarar_c(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buff
     fclose(archivo_C);    
 }
 ```
-
+En enmascararAssembler esta contenida enmascarar_asm (llamada a funcion externa de assembler)y la escritura ya que al calcular el tiempo de procesamiento se tiene en cuenta la escritura del archivo de salida. 
 ```
 void enmascararAssembler(unsigned char *a ,unsigned char *b ,unsigned char *mask,int cant)
 {
