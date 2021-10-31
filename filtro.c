@@ -10,7 +10,7 @@ void procesarImagen(unsigned char *buff1,unsigned char *buff2,unsigned char *buf
 
 int main(int argc, char *argv[])  
 {
-    unsigned char *img,*img2,*mask;
+    unsigned char *img,*img2,*mask,*alt;
     unsigned char *buffer1,*buffer2,*buffermask;
     int alto,ancho,imagenSize;
     clock_t inicio,fin;
@@ -20,9 +20,9 @@ int main(int argc, char *argv[])
     img = (unsigned char *)argv[1];
     img2 = (unsigned char *)argv[2];
     mask = (unsigned char *)argv[3];
-    sscanf(argv[4],"%d",&alto);
-    sscanf(argv[5],"%d",&ancho);
-    
+    alto = atoi(argv[4]);
+    ancho = atoi(argv[5]);  
+     
     imagenSize = alto * ancho * RGB_size;
     buffer1 = (unsigned char *)malloc(imagenSize);
     buffer2 = (unsigned char *)malloc(imagenSize);
@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
     free(buffer1);
     free(buffer2);
     free(buffermask);
+    
     return 0;
 }
 

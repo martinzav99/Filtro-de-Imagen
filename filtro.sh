@@ -7,6 +7,7 @@ gm convert lobo.jpg lobo.rgb
 gm convert boceto.jpg boceto.rgb
 
 ./filtro "paisaje.rgb" "lobo.rgb" "boceto.rgb" 3888 2592
+
 gm convert -size 3888x2592 -depth 8  salida.rgb  salida.jpg
 gm convert -size 3888x2592 -depth 8  salida2.rgb  salida2.jpg
 

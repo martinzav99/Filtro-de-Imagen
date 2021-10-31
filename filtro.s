@@ -1,5 +1,6 @@
 section .data
 pixelNegro db 0
+
 section .text
     global enmascarar_asm
 
