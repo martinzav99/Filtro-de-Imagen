@@ -57,10 +57,10 @@ int cargarBuffer(unsigned char *imagen, unsigned char * buffer,int cant_bytes)
 {
     FILE *archivo = fopen(imagen,"rb");
 
-    if (!archivo)
+    if (archivo==NULL)
     {
         perror("Error al abrir archivo");
-        return 2;
+        return 1;
     }
 
     fread(buffer,cant_bytes,sizeof(unsigned char),archivo);    
