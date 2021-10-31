@@ -38,10 +38,13 @@ _Nota: No es necesario hacer el update en cada paso, con hacerlo una vez al prin
 - Desarrolar una aplicacion de linea de comando que combine dos imagenes usando una mascara de seleccion.
 - Implementar una funcion enmascar_Asm en ensamblador de 32 usando instrucciones SIMD y pasaje de parametros.
 - Implementar una funcion enmascar_C  en lenguaje C.
+- Medir el tiempo de cada funcion
 
 ### Resolución 🔧
 
-
+Para obtener los atributos pasados por linea de comado (imagen1  iamgen2  mascara alto ancho) se utiliza argc y *argv[].Este ultimo es un vector de punteros *char , que en cierta forma podemos decir que es un vector de strings.<p>
+Se empieza el codigo declarando todas las variables a usar y a continuacion se las instancia. Primero se guarda los nombres de los archivo donde estan las imagenes/mascara y despues usando la funcion atoi , que permite pasar de "String" a entero, guardamos los valores del alto y ancho.<p>
+Tambien se define el tamaño de un RGB, este nos servira para mas adelante reservar la memoria necesaria.   
 ```
 int main(int argc, char *argv[])  
 {
@@ -59,8 +62,10 @@ int main(int argc, char *argv[])
     ancho = atoi(argv[5]); 
     ...
 ```
+_Nota: En argv[0] se encuentra el nombre del archivo.C por eso no es usado._
+_Nota2: RGB = [255,255,255] = [8bits,8bits,8bits] = [1byte,1byte,1byte] = 3bytes._
 
-
+A continuacion, reservamos memoria para cada buffer , para esto usamos la funcion malloc que no pide el tamaño de los datos a reservar y la cantidad en bytes. Luego, se usa la funcion cargarBuffer,para meter la informacion de las fotos en el buffer correspondiente y free para liberar la memoria de los buffer para cuando no se usen mas.
 ```
     ...
     imagenSize = alto * ancho * RGB_size;
@@ -78,7 +83,9 @@ int main(int argc, char *argv[])
     return 0;
 }
 ```
+_Nota: La funcion malloc pertence a la libreria stdlib.h._
 
+Lo mas importante a destacar de cargarBuffer es el uso del tipo FILE y su funcion fopen que solicita un nombre y el modo en que se usara, en nuestro caso "rb" hace referencia que el archivo designado se leera byte por byte. Despues, se usa fread para guardar la informacion del archivo (imagen) en un buffer.
 ```
 int cargarBuffer(unsigned char *imagen, unsigned char * buffer,int cant_bytes)
 {
@@ -88,6 +95,7 @@ int cargarBuffer(unsigned char *imagen, unsigned char * buffer,int cant_bytes)
     fclose(archivo);
 }
 ```
+Tanto para enmascar_Asm y enmascar_C, se medira el tiempo de procesamiento de imagen, para esto se usa la funcion clock() que maracara un inicio y fin para luego, en base a estos, calcular el tiempo transcurrido.
 ```
     ...
     inicio=clock();
@@ -105,6 +113,8 @@ int cargarBuffer(unsigned char *imagen, unsigned char * buffer,int cant_bytes)
     printf("Tiempo en ASM : %.6f\n",tiempoC);
     ...
 ```
+_Nota: La funcion clock pertence a la libreria time.h_
+
 
 ```
 int enmascarar_c(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buffMask,int cant)
@@ -112,7 +122,7 @@ int enmascarar_c(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buff
     int i=0;
     while(i<cant)
     {
-        if (buffMask[i]==0 && buffMask[i+1]==0 && buffMask[i+2]==0)
+        if (buffMask[i]==255 && buffMask[i+1]==255 && buffMask[i+2]==255)
         {
             buff1[i] = buff2[i];
             buff1[i+1] = buff2[i+1];
