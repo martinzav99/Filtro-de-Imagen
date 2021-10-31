@@ -48,18 +48,18 @@ Tambien se define el tamaño de un RGB, este nos servira para mas adelante reser
 ```
 int main(int argc, char *argv[])  
 {
-    unsigned char *img,*img2,*mask,*alt;
     unsigned char *buffer1,*buffer2,*buffermask;
+    char *img,*img2,*mask,*alt;
     int alto,ancho,imagenSize;
-    clock_t inicio,fin;
     double tiempoC,tiempoAsm;
+    clock_t inicio,fin;
 
     int RGB_size = 3; //en bytes
-    img = (unsigned char *)argv[1];
-    img2 = (unsigned char *)argv[2];
-    mask = (unsigned char *)argv[3];
+    img = argv[1];
+    img2 = argv[2];
+    mask = argv[3];
     alto = atoi(argv[4]);
-    ancho = atoi(argv[5]); 
+    ancho = atoi(argv[5]);
     ...
 ```
 _Nota: En argv[0] se encuentra el nombre del archivo.C por eso no es usado._
@@ -87,7 +87,7 @@ _Nota: La funcion malloc pertence a la libreria stdlib.h._
 
 Lo mas importante a destacar de cargarBuffer es el uso del tipo FILE y su funcion fopen que solicita un nombre y el modo en que se usara, en nuestro caso "rb" hace referencia que el archivo designado se leera byte por byte. Despues, se usa fread para guardar la informacion del archivo (imagen) en un buffer.
 ```
-int cargarBuffer(unsigned char *imagen, unsigned char * buffer,int cant_bytes)
+int cargarBuffer(char *imagen, unsigned char * buffer,int cant_bytes)
 {
     FILE *archivo = fopen(imagen,"rb");
     ...
@@ -138,12 +138,12 @@ int enmascarar_c(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buff
 ```
 En enmascararAssembler esta contenida enmascarar_asm (llamada a funcion externa de assembler)y la escritura ya que al calcular el tiempo de procesamiento se tiene en cuenta la escritura del archivo de salida. 
 ```
-void enmascararAssembler(unsigned char *a ,unsigned char *b ,unsigned char *mask,int cant)
+void enmascararAssembler(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buffMask,int cant)
 {
-    enmascarar_asm(a,b,mask,cant);
+    enmascarar_asm(buff1,buff2,buffMask,cant);
 
     FILE *archivo_Asm = fopen("salida2.rgb","wb");
-    fwrite(a,cant,1,archivo_Asm);
+    fwrite(buff1,cant,1,archivo_Asm);
     fclose(archivo_Asm);
 }
 ```
@@ -152,7 +152,7 @@ void enmascararAssembler(unsigned char *a ,unsigned char *b ,unsigned char *mask
 _Nota: En algunos resultados puede no ser exactamente precisos y presentar errores de redondeo_ 
 Para mas informacion:[Link](http://puntoflotante.org/errors/rounding/)
 * **r positivo**<p>
-![Screenshot](escalar2.png)
+![Screenshot](tiemposEnmascarar.jpg)
 * **r negativo** <p>
 ![Screenshot](escalar1.png)
 
