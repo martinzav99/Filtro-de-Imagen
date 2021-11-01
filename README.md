@@ -42,6 +42,7 @@ _Nota: No es necesario hacer el update en cada paso, con hacerlo una vez al prin
 
 ### Resolución 🔧
 
+#### Codigo C
 **Para obtener los atributos** pasados por linea de comado (imagen1  iamgen2  mascara alto ancho) **se utiliza argc y *argv[]**.Este ultimo es un vector de punteros *char , que en cierta forma podemos decir que es un vector de strings.<p>
 Se empieza el codigo declarando todas las variables a usar y a continuacion se las instancia. Primero se guarda los nombres de los archivo donde estan las imagenes/mascara y despues usando la funcion atoi , que permite pasar de "String" a entero, guardamos los valores del alto y ancho.<p>
 Tambien se define el tamaño de un RGB, este nos servira para mas adelante reservar la memoria necesaria.   
@@ -148,6 +149,56 @@ void enmascararAssembler(unsigned char *buff1 ,unsigned char *buff2 ,unsigned ch
 }
 ```
 _Nota: La funcion enmascarar_Asm se declara con la etiqueta extern al principio del codigo_
+
+#### Codigo assembler
+
+**Definimos el valor del blanco** en la seccion de Datos y en la seccion de text **se define la variable global** con el mismo nombre con el que es invocado desde C. Tambien remarcamos el uso del comando **enter** (push ebp - mov ebp,esp) y **leave** (mov esp,ebp -push ebp) que permiten el alineaminto de los punteros de la pila para un manejo mas organizado al momento de recibir parametros desde c. 
+```
+section .data
+pixelBlanco db 255
+
+section .text
+    global enmascarar_asm
+
+enmascarar_asm:
+push ebp
+mov ebp,esp
+...
+mov esp,ebp
+pop ebp
+
+ret
+```
+**Se guardan en los registros de proposito general los punteros a las imagenes(recordemos que estan en buffers)** y un puntero que guarda el tamaño de la imagen.<p>
+Por otro lado, usamos el registro esi para avanzar por el archivo y en edi se guarda el valor declarado antes.
+```
+mov eax , [ebp+8] ;img1
+mov ebx , [ebp+12] ;img2
+mov ecx , [ebp+16] ; mask
+mov edx , [ebp +20] ; imgSize
+mov esi , 0
+mov edi , [pixelBlanco]
+```
+
+
+```
+ciclo:
+movd xmm0,[eax+esi]
+movd xmm1,[ebx+esi]
+cmp [ecx+esi] , edi
+jne esPixelNegro 
+movaps xmm2,xmm1
+jmp continuar
+
+esPixelNegro:
+movaps xmm2,xmm0
+
+continuar:
+movd [eax+esi],xmm2
+add esi,4
+cmp esi , edx
+jb ciclo
+```
 
 ### Ejemplos 🚀
 _Nota: Los tiempos dependen del tamaño de la imagen/mascara_ 
