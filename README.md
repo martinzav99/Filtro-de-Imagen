@@ -147,6 +147,7 @@ void enmascararAssembler(unsigned char *buff1 ,unsigned char *buff2 ,unsigned ch
     fclose(archivo_Asm);
 }
 ```
+_Nota: La funcion enmascarar_Asm se declara con la etiqueta extern al principio del codigo_
 
 ### Ejemplos 🚀
 _Nota: Los tiempos dependen del tamaño de la imagen/mascara_ 
@@ -156,9 +157,27 @@ _Nota: Los tiempos dependen del tamaño de la imagen/mascara_
 ![Screenshot](salida.jpg)
 
 ## Ejecucion 📦
-Se puede notar en los ejemplos que para ejecutar el programa se hace uso de un archivo .sh , estos ejecutable contienen el codigo de compilacion.
+Se puede notar en los ejemplos que para ejecutar el programa se hace uso de un archivo .sh.
+1. Al  principio se encuentran los comandos para compilar el codigo assembler (nasm) y el codigo C (gcc).
+2. Se convierten las imagenes/mascara a formato rgb.
+3. Se ejecuta el programa compilado previamente y se le pasan los parametros (imagenes.rgb , ancho y alto).
+4. Transformar la salida del programa de .rgb a jpg especificando el tamaño y una profundidad (obligatoria para formatos .rgb porque no lo tienen).
+5. borrar archivos .rgb que ya no se usan. 
 ```
+#!/bin/bash
+nasm -f elf filtro.s -o filtro.o
+gcc -m32 filtro.o filtro.c -o filtro
 
+gm convert paisaje.jpg paisaje.rgb
+gm convert lobo.jpg lobo.rgb
+gm convert boceto.jpg boceto.rgb
+
+./filtro "paisaje.rgb" "lobo.rgb" "boceto.rgb" 3888 2592
+
+gm convert -size 3888x2592 -depth 8  salida.rgb  salida.jpg
+gm convert -size 3888x2592 -depth 8  salida2.rgb  salida2.jpg
+
+rm paisaje.rgb lobo.rgb boceto.rgb salida.rgb salida2.rgb 
 ```
 ## Autor ✒️
 - Martin Zavalla Gamarra.
