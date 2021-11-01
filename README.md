@@ -180,7 +180,7 @@ mov esi , 0
 mov edi , [pixelBlanco]
 ```
 
-
+Usando registro de SSE (xmm) guardamos los valores de los punteros, y dependiendo de el valor, si es pixel negro, mueve lo guardado en la primer imagen a un registro auxiliar y luego lo guardo en la posicion de memoria de la primer imagen . Caso contrario muevo el contenido de la imagen 2 en el auxiliar xmm2 para despues  guardarlo en la posicion de memoria de la primer imagen.Se repite estos pasos hasta terminar la imagen.
 ```
 ciclo:
 movd xmm0,[eax+esi]
