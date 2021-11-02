@@ -21,13 +21,9 @@ movd xmm1,[ebx+esi]
 cmp [ecx+esi] , edi
 jne esPixelNegro 
 movaps xmm2,xmm1
-jmp continuar
+movd [eax+esi],xmm2
 
 esPixelNegro:
-movaps xmm2,xmm0
-
-continuar:
-movd [eax+esi],xmm2
 add esi,4
 cmp esi , edx
 jb ciclo
