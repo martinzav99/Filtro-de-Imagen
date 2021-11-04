@@ -227,6 +227,10 @@ gm convert -size 3888x2592 -depth 8  salida2.rgb  salida2.jpg
 
 rm paisaje.rgb lobo.rgb boceto.rgb salida.rgb salida2.rgb 
 ```
+##Conclusion
+Mediante el presente trabajo podemos concluir que la utilización de SIMD nos brinda mayores ventajas al implementar operaciones paralelizables, cómo en este caso el procesamiento de imágenes.
+En los siguientes graficos se muestran las diferencia de implementar ambas
+
 ## Autor ✒️
 - Martin Zavalla Gamarra.
 
