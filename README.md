@@ -49,7 +49,7 @@ Tambien se define el tamaño de un RGB, este nos servira para mas adelante reser
 ```
 int main(int argc, char *argv[])  
 {
-    unsigned char *buffer1,*buffer2,*buffermask;
+    unsigned char *buffer1,*buffer2,*buffermask,*bufferAux;
     char *img,*img2,*mask,*alt;
     int alto,ancho,imagenSize;
     double tiempoC,tiempoAsm;
@@ -72,15 +72,18 @@ A continuacion, **reservamos memoria para cada buffer** , para esto usamos la **
     imagenSize = alto * ancho * RGB_size;
     buffer1 = (unsigned char *)malloc(imagenSize);
     buffer2 = (unsigned char *)malloc(imagenSize);
-    buffermask = (unsigned char *)malloc(imagenSize); 
+    buffermask = (unsigned char *)malloc(imagenSize);
+    bufferAux = (unsigned char *)malloc(imagenSize); 
     
     cargarBuffer(img,buffer1,imagenSize);
     cargarBuffer(img2,buffer2,imagenSize);
     cargarBuffer(mask,buffermask,imagenSize);
+    cargarBuffer(img,bufferAux,imagenSize);
     ...
     free(buffer1);
     free(buffer2);
     free(buffermask);
+    free(bufferAux);
     return 0;
 }
 ```
@@ -155,7 +158,7 @@ _Nota: La funcion enmascarar_Asm se declara con la etiqueta extern al principio 
 **Definimos el valor del blanco** en la seccion de Datos y en la seccion de text **se define la variable global** con el mismo nombre con el que es invocado desde C. Tambien remarcamos el uso del comando **enter** (push ebp - mov ebp,esp) y **leave** (mov esp,ebp -push ebp) que permiten el alineaminto de los punteros de la pila para un manejo mas organizado al momento de recibir parametros desde c. 
 ```
 section .data
-pixelBlanco db 255
+pixelNegro db 0
 
 section .text
     global enmascarar_asm
@@ -177,24 +180,22 @@ mov ebx , [ebp+12] ;img2
 mov ecx , [ebp+16] ; mask
 mov edx , [ebp +20] ; imgSize
 mov esi , 0
-mov edi , [pixelBlanco]
+mov edi , [pixelNegro]
 ```
 
-Usando registro de SSE (xmm) guardamos los valores de los punteros, y dependiendo de el valor, si es pixel negro, simplemente avanzo a la siguiente posicion. Caso contrario muevo el contenido de la imagen 2 en el auxiliar xmm2 para despues  guardarlo en la posicion de memoria de la primer imagen.Se repite estos pasos hasta terminar la imagen.
+Usando registro de SSE (xmm) guardamos los valores de los punteros, y dependiendo de el valor, si es pixel negro, simplemente avanzo a la siguiente posicion. Caso contrario muevo el contenido de la imagen 2 y lo guardo en la posicion de memoria de la primer imagen.Se repite estos pasos hasta terminar la imagen.
 ```
 ciclo:
 movd xmm0,[eax+esi]
 movd xmm1,[ebx+esi]
 cmp [ecx+esi] , edi
-jne esPixelNegro 
-movaps xmm2,xmm1
-movd [eax+esi],xmm2
+je esPixelNegro 
+movd [eax+esi],xmm1
 
 esPixelNegro:
 add esi,4
 cmp esi , edx
 jb ciclo
-
 ```
 
 ### Ejemplos 🚀
