@@ -241,4 +241,5 @@ En los siguientes graficos se muestran las diferencia de implementar ambas.
 
 ## Autor ✒️
 - Martin Zavalla Gamarra.
+- Melina Alejandra Cueva.
 
