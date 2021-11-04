@@ -9,8 +9,8 @@ int cargarBuffer(char *imagen, unsigned char *buffer,int cant);
 
 int main(int argc, char *argv[])  
 {
-    unsigned char *buffer1,*buffer2,*buffermask;
-    char *img,*img2,*mask,*alt;
+    unsigned char *buffer1,*buffer2,*buffermask,*bufferAux;
+    char *img,*img2,*mask;
     int alto,ancho,imagenSize;
     double tiempoC,tiempoAsm;
     clock_t inicio,fin;
@@ -25,11 +25,13 @@ int main(int argc, char *argv[])
     imagenSize = alto * ancho * RGB_size;
     buffer1 = (unsigned char *)malloc(imagenSize);
     buffer2 = (unsigned char *)malloc(imagenSize);
-    buffermask = (unsigned char *)malloc(imagenSize); 
+    buffermask = (unsigned char *)malloc(imagenSize);
+    bufferAux = (unsigned char *)malloc(imagenSize); 
     
     cargarBuffer(img,buffer1,imagenSize);
     cargarBuffer(img2,buffer2,imagenSize);
     cargarBuffer(mask,buffermask,imagenSize);
+    cargarBuffer(img,bufferAux,imagenSize);
      
     inicio=clock();
     enmascarar_c(buffer1,buffer2,buffermask,imagenSize);
@@ -40,7 +42,7 @@ int main(int argc, char *argv[])
     printf("\n");
 
     inicio=clock();
-    enmascararAssembler(buffer1,buffer2,buffermask,imagenSize);
+    enmascararAssembler(bufferAux,buffer2,buffermask,imagenSize);
     fin=clock();
     tiempoC = (double)(fin-inicio)/CLOCKS_PER_SEC;
     printf("Imagen tamano: %d x %d\n",alto,ancho);
@@ -50,6 +52,7 @@ int main(int argc, char *argv[])
     free(buffer1);
     free(buffer2);
     free(buffermask);
+    free(bufferAux);
     
     return 0;
 }
@@ -73,11 +76,11 @@ int enmascarar_c(unsigned char *buff1 ,unsigned char *buff2 ,unsigned char *buff
     int i=0;
     while(i<cant)
     {
-        if (buffMask[i]==255 && buffMask[i+1]==255 && buffMask[i+2]==255)
+        if (buffMask[i]==255 && buffMask[i+1]==255 && buffMask[i+2]==255 )
         {
             buff1[i] = buff2[i];
             buff1[i+1] = buff2[i+1];
-            buff1[i+2] = buff2[i+2];           
+            buff1[i+2] = buff2[i+2];          
         }
         i+=3;
     }
