@@ -8,23 +8,23 @@ El objetivo de realizar esta aplicacion en dos entornos diferentes es comparar l
 ## Pre-Requisitos 📋
 Los siguientes comandos se ejecutan en la terminal de Linux: 
 
-<b>Clonar el repositorio<b>
+**Clonar el repositorio**
 ```
 sudo apt update
 sudo apt-get install git
 git clone https://gitlab.com/martinzavallagamarra/tp2-orga-ii.git 
 ```
-<b>Uso de gcc<b>
+**Uso de gcc**
 ```
 sudo apt-get update
 sudo apt-get install gcc 
 ```
-<b>Uso de Nasm<b>
+**Uso de Nasm**
 ```
 sudo apt-get update
 sudo apt-get install nasm 
 ```
-<b>Uso de GraphicsMagick<b>
+**Uso de GraphicsMagick**
 ```
 sudo apt-get update
 sudo apt-get install graphiscmagick 
