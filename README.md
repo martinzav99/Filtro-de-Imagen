@@ -158,7 +158,7 @@ _Nota: La funcion enmascarar_Asm se declara con la etiqueta extern al principio 
 #### Codigo assembler
 
 **Definimos el valor del blanco** en la seccion de Datos y en la seccion de text **se define la variable global** con el mismo nombre con el que es invocado desde C. Tambien remarcamos el uso del comando **enter** (push ebp - mov ebp,esp) y **leave** (mov esp,ebp -push ebp) que permiten el alineaminto de los punteros de la pila para un manejo mas organizado al momento de recibir parametros desde c. 
-```
+```asm
 section .data
 pixelNegro db 0
 
@@ -176,7 +176,7 @@ ret
 ```
 **Se guardan en los registros de proposito general los punteros a las imagenes(recordemos que estan en buffers)** y un puntero que guarda el tamaño de la imagen.<p>
 Por otro lado, usamos el registro esi para avanzar por el archivo y en edi se guarda el valor declarado antes.
-```
+```asm
 mov eax , [ebp+8] ;img1
 mov ebx , [ebp+12] ;img2
 mov ecx , [ebp+16] ; mask
@@ -186,7 +186,7 @@ mov edi , [pixelNegro]
 ```
 
 Usando registro de SSE (xmm) guardamos los valores de los punteros, y dependiendo de el valor, si es pixel negro, simplemente avanzo a la siguiente posicion. Caso contrario muevo el contenido de la imagen 2 y lo guardo en la posicion de memoria de la primer imagen.Se repite estos pasos hasta terminar la imagen.
-```
+```asm
 ciclo:
 movd xmm0,[eax+esi]
 movd xmm1,[ebx+esi]
@@ -214,7 +214,7 @@ Se puede notar en los ejemplos que para ejecutar el programa se hace uso de un a
 3. Se ejecuta el programa compilado previamente y se le pasan los parametros (imagenes.rgb , ancho y alto).
 4. Transformar la salida del programa de .rgb a jpg especificando el tamaño y una profundidad (obligatoria para formatos .rgb porque no lo tienen).
 5. borrar archivos .rgb que ya no se usan. 
-```
+```bash
 #!/bin/bash
 nasm -f elf filtro.s -o filtro.o
 gcc -m32 filtro.o filtro.c -o filtro
