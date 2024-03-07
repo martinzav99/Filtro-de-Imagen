@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
     ...
 ```
 _Nota: En argv[0] se encuentra el nombre del archivo.C por eso no es usado._
+
 _Nota2: RGB = [255,255,255] = [8bits,8bits,8bits] = [1byte,1byte,1byte] = 3bytes._
 
 A continuacion, **reservamos memoria para cada buffer** , para esto usamos la **funcion malloc** que no pide el tamaño de los datos a reservar y la cantidad en bytes. Luego, se usa la funcion cargarBuffer,para meter la informacion de las fotos en el buffer correspondiente **y free para liberar la memoria** de los buffer para cuando no se usen mas.
