@@ -214,7 +214,7 @@ Se puede notar en los ejemplos que para ejecutar el programa se hace uso de un a
 3. Se ejecuta el programa compilado previamente y se le pasan los parametros (imagenes.rgb , ancho y alto).
 4. Transformar la salida del programa de .rgb a jpg especificando el tamaño y una profundidad (obligatoria para formatos .rgb porque no lo tienen).
 5. borrar archivos .rgb que ya no se usan. 
-```shell
+```
 #!/bin/bash
 nasm -f elf filtro.s -o filtro.o
 gcc -m32 filtro.o filtro.c -o filtro
